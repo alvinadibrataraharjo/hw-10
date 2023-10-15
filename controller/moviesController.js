@@ -1,4 +1,5 @@
 const Movies = require('../models/MoviesModels.js');
+const path = require('path');
 
 class Controller {
   static showAllMovies(req, res) {
@@ -29,8 +30,14 @@ class Controller {
   }
 
   static post(req, res) {
-    const { title, genres, year, photo } = req.body; 
-
+    const { title, genres, year } = req.body; 
+    if(!req.file){
+        return res.status(400).json({
+            status:false,
+            message:'no file selected'
+        })
+    }
+    const photo = req.file.path
     const dataMovie = {
         title, genres, year, photo 
     }
@@ -45,7 +52,15 @@ class Controller {
   }
 
   static edit(req, res) {
-    const { title, genres, year, photo } = req.body; 
+    const { title, genres, year } = req.body; 
+
+    if(!req.file){
+      return res.status(400).json({
+          status:false,
+          message:'no file selected'
+      })
+    }
+    const photo = req.file.path
 
     const dataMovie = {
         title, genres, year, photo 
